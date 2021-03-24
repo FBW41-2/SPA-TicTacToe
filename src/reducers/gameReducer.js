@@ -9,19 +9,29 @@ const gameReducer = (state, action) => {
       newSquaresArr[action.num] = action.player;
       const updatedHistory = [...state.moveHistory, newSquaresArr];
       
-      localStorage.gameState = JSON.stringify({
-        moveHistory: updatedHistory,
-        curMoveNum: updatedHistory.length,
-        currentMove: newSquaresArr,
-        player: state.player === "X" ? "O" : "X"
-      });
+      fetch("http://localhost:8080/game", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          moveHistory: updatedHistory,
+          curMoveNum: updatedHistory.length,
+          currentMove: newSquaresArr,
+          player: state.player === "X" ? "O" : "X"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("sent game state")
+      })
 
       return {
         moveHistory: updatedHistory,
         curMoveNum: updatedHistory.length,
         currentMove: newSquaresArr,
         player: state.player === "X" ? "O" : "X",
-        winner: checkWinner(newSquaresArr)
+        winner: checkWinner(newSquaresArr),
       };
     case "back":
       return {
@@ -37,8 +47,9 @@ const gameReducer = (state, action) => {
       };
 
     case "restore":
-      console.log("restore");
+      console.log("restore", action.gameState);
       return {
+        ...state,
         ...action.gameState,
         winner: checkWinner(action.gameState.currentMove)
       };

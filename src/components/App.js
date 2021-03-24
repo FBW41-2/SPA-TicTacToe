@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import { Route, NavLink } from "react-router-dom";
 import Game from "./Game";
 import Highscores from "./Highscores";

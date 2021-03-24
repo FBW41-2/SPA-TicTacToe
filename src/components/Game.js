@@ -1,13 +1,25 @@
 import React, { useEffect, useReducer } from "react";
 import Board from "./Board";
 import { gameReducer } from "../reducers/gameReducer"
-import { getStoredGame } from "../dataSources/localStorage"
 
 function Game() {
+
+  function startPoll() {
+    const updater = setInterval(() => {
+      fetch("http://localhost:8080/game")
+      .then(res => res.json())
+      .then(data => {
+        if(data.moveHistory) dispatch({ type: "restore", gameState: data })
+      })
+    }, 1000)
+  }
+
   // restore original game state
   useEffect(() => {
-    const storedGame = getStoredGame()
-    storedGame && dispatch({ type: "restore", gameState: storedGame });
+    startPoll()
+
+    
+    
   }, []);
 
   //                   1. state updater function   2. initial state
