@@ -6,7 +6,7 @@ function Game() {
 
   function startPoll() {
     const updater = setInterval(() => {
-      fetch("http://localhost:8080/game")
+      fetch("https://dci-basic-server.herokuapp.com/game")
       .then(res => res.json())
       .then(data => {
         if(data.moveHistory) dispatch({ type: "restore", gameState: data })

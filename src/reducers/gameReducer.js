@@ -9,7 +9,7 @@ const gameReducer = (state, action) => {
       newSquaresArr[action.num] = action.player;
       const updatedHistory = [...state.moveHistory, newSquaresArr];
       
-      fetch("http://localhost:8080/game", {
+      fetch("https://dci-basic-server.herokuapp.com/game", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
